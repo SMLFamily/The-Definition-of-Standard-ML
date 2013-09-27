@@ -1,0 +1,423 @@
+\section{Appendix: The Development of ML}
+\label{story-app}
+
+This Appendix records the main stages in the development
+of ML, and the people principally involved.  The main emphasis is upon
+the design of the language; there is also a section devoted to 
+implementation. On the other hand, no attempt is made to record work on 
+implementation environments, or on applications of the language.
+ 
+\subsection*{Origins}
+
+ML and its semantic description have evolved over a period of about
+fourteen years.  It is a fusion of many ideas from many people;  in this
+appendix we try to record and to acknowledge the important precursors
+of its ideas, the important influences upon it, and the important
+contributions to its design, implementation and semantic description.
+
+ML, which stands for {\sl meta language}, was conceived as a medium for
+finding and performing proofs in a formal logical system.  This
+application was the focus of the initial design effort, by Robin Milner
+in collaboration first with Malcolm Newey and Lockwood Morris, then
+with Michael Gordon and Christopher Wadsworth \cite{GMMNW}. The intended application
+to proof affected the design considerably.  Higher order functions 
+in full generality seemed necessary for programming proof tactics and
+strategies, and also a robust type system (see below).  At the same time,
+imperative features were important for practical reasons; no-one had experience
+of large useful programs written in a pure functional style. In particular,
+an exception-raising mechanism was highly desirable for the natural presentation
+of tactics.
+
+The full definition of this first version of ML was included in a book 
+\cite{GMW}
+which describes LCF, the proof system which ML was designed to support. 
+The details of how the proof application exerted an influence on design is
+reported by Milner \cite{Mil2}.
+Other early influences were the applicative languages already in use
+in Artificial Intelligence, principally LISP \cite{McC}, ISWIM \cite{Lan} and 
+POP2 \cite{BP}.
+
+\subsection*{Polymorphic types}
+
+The polymorphic type discipline and the associated type-assignment algorithm
+were prompted by the need for security;  it is vital to know that when
+a program produces an object which it claims to be a theorem, then it
+is indeed a theorem.  A type discipline provides the security, but a
+polymorphic discipline also permits considerable flexibility.
+
+The key ideas of the type discipline were evolved in
+combinatory logic by Haskell Curry and Roger Hindley, who arrived at
+different but equivalent algorithms for computing principal type schemes.
+Curry's \cite{Cur} algorithm was by equation-solving; Hindley \cite{Hin} used
+the unification algorithm of Alan Robinson \cite{Rob} and  also presented the 
+precursor of our type inference system.
+James Morris \cite{Mor} independently gave an equation-solving algorithm very
+similar to Curry's.  The idea of an algorithm for finding principal 
+type schemes is very natural and may well have been known earlier. I am
+grateful to Roger Hindley for pointing out that Carew Meredith's inference 
+rule for propositional logic called Condensed Detachment, defined
+in the early 1950s, clearly suggests that he knew such an algorithm \cite{Mer}. 
+
+Milner \cite{Mil1}, during the design of ML,
+rediscovered principal types and their calculation by unification, for a
+language (slightly richer than combinatory logic) containing local
+declarations.  He and Damas \cite{DM} presented the ML type inference systems
+following Hindley's style.
+Damas \cite{Dam}, using ideas from Michael Gordon, also devised the first
+mathematical treatment of polymorphism in the presence of references and
+assignment.  Tofte \cite{Tof-a} produced a different scheme, which
+has been adopted in the language.
+
+\subsection*{Refinement of the Core Language}
+
+Two movements led to the re-design of ML.  One was the work of Rod
+Burstall and his group on specifications, crystallised in the specification
+language CLEAR \cite{BG} and in the functional programming language HOPE
+\cite{BMS};  the latter was for expressing executable specifications.  The
+outcome of this work which is relevant here was twofold.  First, there were
+elegant programming features in HOPE, particularly pattern matching
+and clausal function definitions;  second, there were ideas on modular
+construction of specifications, using signatures in the 
+interfaces.  A smaller but significant movement was by Luca Cardelli,
+who extended the data-type repertoire in ML by adding named records and
+variant types.
+
+In 1983, Milner (prompted by Bernard Sufrin) wrote the first draft of a
+standard form of ML attempting to unite these ideas;  over the next three
+years it evolved into the Standard ML Core Language.  Notable here was
+the harmony found among polymorphism, HOPE patterns and Cardelli records,
+and the nice generalisations of ML exceptions due to ideas from Alan
+Mycroft, Brian Monahan and Don Sannella.  A simple stream-based I/O mechanism
+was developed from ideas of Cardelli by Milner and Harper.  The Standard ML
+Core Language is described in detail in a composite report \cite{HMM} which also
+contains a description of the I/O mechanism and MacQueen's proposal
+for program modules (see later for discussion of this). Since then only
+few changes to the Core Language have occurred.  Milner proposed
+equality types, and these were added, together with a few minor
+adjustments \cite{Mil3}.   The latest and final development has been in the
+exception mechanism, by MacQueen using an idea from Burstall \cite{AMMT};  
+it unites the ideas of exception and data type construction.
+
+\subsection*{Modules}
+
+Besides contributory ideas to the Core Language, HOPE \cite{BMS} contained
+a simple notion of program module.  The most important and original
+feature of ML Modules, however, stems from the work on parameterised
+specifications in CLEAR \cite{BG}.  MacQueen, who was a member of Burstall's
+group at the time, designed \cite{Mac} a new parametric module feature for HOPE
+inspired by the CLEAR work.
+He later extended the parameterisation ideas by a novel method
+of specifying sharing of components among the structure parameters of
+a functor, and produced a draft design which accommodated features already
+present in ML -- in particular the polymorphic type system.  This design
+was discussed in detail at Edinburgh, leading to MacQueen's first
+report on Modules \cite{HMM}.
+
+Thereafter, the design came under close scrutiny through a draft operational
+static semantics and prototype
+implementation of it by Harper, through Kevin Mitchell's implementation of
+the evaluation, through a denotational semantics written by
+Don Sannella, and then through further work on operational semantics by Milner
+and Tofte.  (More is said about this in the later section on Semantics.)
+In all of this work the central ideas withstood scrutiny, while it
+also became clear that there were gaps in the design and ambiguities in
+interpretation.  (An example of a gap was the inability to specify sharing
+between a functor argument structure and its result structure;  an
+example of an ambiguity was the question of whether sharing exists in a
+structure over and above what is specified in the signature expression
+which accompanies its declaration.)
+
+Much discussion ensued;  it was possible for a wider group to comment on
+Modules through using Harper's prototype implementation, while
+Harper, Milner and Tofte gained understanding during development of this
+semantics.  In parallel, Sannella and Tarlecki explored the implications
+of Modules for the methodology of program development \cite{ST}.  Tofte, in his 
+thesis \cite{Tof}, proved several technical
+properties of Modules in a skeletal language, which generated considerable
+confidence in this design. A key point in this development was the proof
+of the existence of principal signatures, and, in the careful distinction
+between the notion of {\it enrichment} of structures, which allows more
+polymorphism and more components, and {\it realisation} which allows more
+sharing.
+
+At a meeting in Edinburgh in 1987 a choice of two designs was presented,
+hinging upon whether or not a functor application should coerce its
+actual argument to its argument signature.  The meeting chose coercion,
+and thereafter the production of Section~\ref{statmod-sec} of this report -- the
+Static Semantics of Modules -- was a matter of detailed care.  That
+section is undoubtedly the most original and demanding part of this
+semantics, just as the ideas of MacQueen upon which it is based are the
+most far-reaching extension to the original design of ML.
+
+\subsection*{Implementation}
+
+The first implementation of ML was by Malcolm Newey, Lockwood Morris
+and Robin Milner in 1974, for the DEC10.  Later Mike Gordon and Chris
+Wadsworth joined;  their work was mainly in specialising ML towards
+machine-assisted reasoning.  Around 1980 Luca Cardelli implemented
+a version on VAX;  his work was later extended by Alan Mycroft, Kevin
+Mitchell and John Scott.  This version contained one or two new data-type 
+features, and was based upon the Functional Abstract Machine (FAM), a virtual
+machine which has been a considerable stimulus to later implementation.
+By providing a reasonably efficient implementation, this work enabled the 
+language to be taught to students; this, in turn, prompted
+the idea that it could become a useful general purpose language.
+
+In Gothenburg, an implementation was developed by Lennart Augustsson and 
+Thomas Johnsson in 1982, using lazy 
+evaluation rather than call-by-value; the result was called Lazy ML
+and is reported in \cite{Aug}.  This work is part of continuing research
+in many places on implementation of lazy evaluation in pure functional 
+languages.  But for ML, which includes exceptions and assignment, the 
+emphasis has been mainly upon strict evaluation (call-by-value).
+
+In Cambridge, in the early 1980s, Larry Paulson made considerable improvements
+to the Edinburgh ML compiler, as part of his wider programme of improving
+Edinburgh LCF to become Cambridge LCF \cite{Pau}.  This system has supported 
+larger proofs than the Edinburgh system, and with greater convenience; in 
+particular, the compiled ML code ran four to five times faster.
+
+Around the same time G\'{e}rard Huet at INRIA (Versailles) adapted ML to 
+Maclisp on Multics, again for use in machine-assisted proof.  There was
+close collaboration between INRIA and Cambridge in this period.
+ML has undergone a separate development in the group at INRIA, arriving at a 
+language and implementation known as CAML \cite{CCM}; this is close to the core 
+language of Standard ML, but does not include the Modules. 
+
+The first implementation of the Standard ML core language was by Mitchell, 
+Mycroft and John Scott of Edinburgh, around 1984, and this was shortly followed
+by an implementation by David Matthews at Cambridge, carried out 
+in his language Poly.  
+
+The prototype implementation of Modules, before that part
+of the language settled down, was done in 1985-6;  Mitchell dealt with
+evaluation, while Harper tackled the elaboration (or `signature checking')
+which raised problems of a kind not previously encountered.  The Edinburgh
+implementation continues to play the role of a test-bed for language
+development.  
+
+Meanwhile Matthews' Cambridge implementation also advanced to embrace
+Modules. This implementation has 
+supported applications of considerable size, both for machine-assisted proof
+and for hardware design. 
+
+In 1986, as the Modules definition was settling down, David MacQueen began 
+an implementation at Bell AT\&T Laboratories, joined later by Andrew Appel
+and Trevor Jim who are particularly interested in compilation into high quality
+machine code.
+
+The Bell and Cambridge implementations, the former led by MacQueen and Appel,
+the latter by Matthews, are currently the most complete and highly engineered.
+Other currently active implementations are by Michael Hedlund at the
+Rutherford-Appleton Laboratory, by Robert Duncan, Simon Nichols and
+Aaron Sloman at the University of Sussex (POPLOG) and by Malcolm Newey
+and his group at the Australian National University.
+ 
+\subsection*{Semantics}
+
+The description of the first version of ML \cite{GMW} was informal, and in an 
+operational style;  around the same time a denotational semantics was written,
+but never published, by Mike Gordon and Robin Milner.  Meanwhile structured
+operational semantics, presented as an inference system, was gaining
+credence as a tractable medium.  This originates with the reduction rules
+of $\lambda$-calculus, but was developed more widely through the work
+of Plotkin \cite{Plo}, and also by Milner.   This was at
+first only used for dynamic semantics, but later the
+benefit of using inference systems for both static and dynamic
+semantics became apparent.  This advantage was realised when Gilles Kahn
+and his group at INRIA were able to execute early versions of both forms of 
+semantics for the ML Core Language using their Typol system \cite{Des}.  
+The static and dynamic
+semantics of the Core reached a final form mostly through work by
+Mads Tofte and Robin Milner.
+
+The modules of ML presented little difficulty as far as dynamic semantics
+is concerned, but the static semantics of Modules was a concerted effort
+by several people.  MacQueen's original informal description \cite{HMM}
+was the starting point;  Sannella wrote a denotational semantics for
+several versions, which showed that several issues had not been settled
+by the informal description.  Robert Harper, while writing the first
+implementation of Modules, made the first draft of the static semantics.
+Harper's version made clear the importance of structure names; 
+work by Milner and Tofte introduced further ideas including realisation;
+thereafter a concerted effort by all three led to several suggestions
+for modification of the language, and a small range of alternative
+interpretations;  these were assessed in discussion with MacQueen, and
+more widely with the principal users of the language, and an agreed form
+was reached.
+
+
+There is no doubt that the interaction between design and semantic
+description of  Modules has been one of the most striking phases in the
+entire language development, leading (in the opinion of those involved)
+to a high degree of confidence both in the language and in the semantic
+method.
+
+\subsection*{Literature} 
+The present document is the definition of Standard ML; further versions
+of it will be produced as the language develops (but the intention is
+to minimise the number of versions).  An informal definition, consistent
+with Version~2 of this document as far as the Core Language is concerned,
+is provided by \cite{HMM}, as modified by \cite{Mil3} and \cite{AMMT}. An elementary
+textbook covering the Core language has been recently published, 
+written by {\AA}ke Wikstr\"{o}m \cite{Wik}.  
+Robert Harper \cite{Har} has written a shorter
+introduction which also includes material on Modules.
+
+\subsection*{Further acknowledgments}
+Apart from the people mentioned above we also acknowledge the following,
+all of whom have contributed in some way to the evolution of ML:
+Guy Cousineau, Simon Finn, Jim Hook,
+Gerard Huet, Gilles Kahn,
+Brian Monahan, 
+Peter Mosses, Alan Mycroft,  David Park,
+David Rydeheard, 
+David Schmidt,  Stefan Sokolowski, Bernard Sufrin,
+Philip Wadler.
+
+\newpage
+%\subsection*{References}
+\addcontentsline{toc}{section}{\protect\numberline{}{\vrule width0pt height2cm depth0pt References}}
+\label{references-sec}
+\begin{thebibliography}{99}
+
+\bibitem{AMMT} Appel, A., MacQueen, D.B., Milner, R. and Tofte, M., 
+{\em Unifying Exceptions with Constructors in Standard ML}, Report ECS-LFCS-88-55,
+Laboratory for Foundations of Computer Science, 
+Computer Science Dept, Edinburgh University, 1988.
+
+\bibitem{Aug} Augustsson L. and Johnsson, T., {\em Lazy ML User's Manual}, 
+Dept.\ of Computer Sciences, Chalmers University of Technology,
+Gothenburg, 1987.
+
+\bibitem{BMS} Burstall R.M., MacQueen, D.B. and Sannella, D.T., 
+{\em HOPE: An Experimental
+Applicative Language}, Report CSR-62-80, 
+Computer Science Dept, Edinburgh University, 1980.
+
+\bibitem{BG} Burstall, R.M. and Goguen, J.A., {\em Putting Theories together to
+make Specifications}, Proc Fifth Annual Joint Conference on Artificial
+Intelligence, Cambridge, Mass., 1977, pp 1045--1058.
+\bibitem{BP} Burstall, R.M. and Popplestone, R., {\em POP-2 Reference Manual},
+Machine Intelligence 2, ed Dale and Michie, Oliver and Boyd, 1968.
+
+\bibitem{CCM} Cousineau, G., Curien, P.L. and Mauny, M., {\em The Categorical
+Abstract Machine}, in Functional Programming Languages and Computer 
+Architecture, ed Jouannaud, Lecture Notes in Computer Science Vol 201,
+Springer Verlag, 1985, pp 50--64.
+
+\bibitem{Cur} Curry, H.B., {\em Modified Basic Functionality in Combinatory
+Logic}, Dialectica 23, 1969, pp 83--92.
+
+\bibitem{Dam} Damas, L., {\em Type Assignment in Programming Languages}, PhD
+thesis, CST-33-85, Computer Science Department, Edinburgh University, 1985.
+
+\bibitem{DM} Damas, L. and Milner, R., {\em Principal Type-schemes for
+Functional Programs}, Proc 9th annual symposium on Principles of Programming
+Languages, ACM, 1982.
+
+\bibitem{Des} Despeyroux, T., {\em Executable Specification of Static Semantics},
+Proc Symposium on Semantics of Data Types, Sophia Antipolis,
+Springer-Verlag Lecture Notes in Computer Science, Vol.173, 1984.
+
+\bibitem{GMMNW} Gordon, M.J.C., Milner, R., Morris,L., Newey, M.C. and 
+Wadsworth, C.P., {\em A Metalanguage for Interactive Proof in LCF}, 
+Proc 5th ACM Symposium on Principles of
+Programming Languages, Tucson, 1978.
+ 
+\bibitem{GMW} Gordon, M.J.C., Milner, R. and Wadsworth, C.P., 
+{\em Edinburgh LCF: a Machanised Logic of Computation},
+Springer-Verlag Lecture Notes in Computer Science, Vol.78, 1979.
+
+\bibitem{Har} Harper, R.W., {\em Introduction to Standard ML}, Report
+ECS-LFCS-86-14, 
+Laboratory for Foundations of Computer Science, 
+Computer Science Department, Edinburgh University, 1986.
+
+\bibitem{Hin} Hindley, R., {\em The Principal Type-scheme of an Object in
+Combinatory Logic}, Transactions of AMS 146, pp29--60, 1969.
+
+\bibitem{HMM} Harper, R.M., MacQueen, D.B. and Milner, R., 
+{\em Standard ML},
+Report ECS-LFCS-86-2, 
+Laboratory for Foundations of Computer Science, 
+Computer Science Department, Edinburgh University, 1986.
+
+\bibitem{ML1} Harper, R.M., Milner, R., Tofte, M., 
+{\em The Semantics of Standard ML, Version 1}
+Report ECS-LFCS-87-36,
+Laboratory for Foundations of Computer Science, 
+Computer Science Department, Edinburgh University, 1987.
+ 
+\bibitem{ML2} Harper, R.M., Milner, R., Tofte, M., 
+{\em The Definition of Standard ML, Version 2}
+Report ECS-LFCS-88-62,
+Laboratory for Foundations of Computer Science, 
+Computer Science Department, Edinburgh University, 1988.
+ 
+\bibitem{ML3} Harper, R.M., Milner, R., Tofte, M., 
+{\em The Definition of Standard ML, Version 3}
+Report ECS-LFCS-89-81,
+Laboratory for Foundations of Computer Science, 
+Computer Science Department, Edinburgh University, 1989.
+ 
+\bibitem{Lan} Landin, P.J., {\em The next 700 Programming Languages}, CACM, Vol.9,
+ No.3, 1966, pp57--164.
+
+\bibitem{Mac} MacQueen, D.D., {\em Structures and parameterisation in a typed 
+functional language}, Proc.\ Symposium on Functional Programming and Computer
+Architecture, Aspinas, Sweden, 1981.
+
+\bibitem{McC} McCarthy, J. et al., {\em LISP 1.5 Programming Manual}, 
+The MIT Press, Cambridge, Mass, 1956.
+
+\bibitem{Mer} Meredith, D., {\em In memoriam Carew Arthur Meredith}, Notre Dame
+J. Formal Logic, Vol 18, 1977, pp 513--516.
+
+\bibitem{Mil1} Milner, R.,
+ {\em A theory of type polymorphism in programming},
+J. Comp. Sys.Sci, Vol 17, 1978, pp 348--375.
+
+\bibitem{Mil2} Milner, R., {\em How ML Evolved}, 
+Polymorphism (The ML/LCF/Hope Newsletter),
+Vol.1, No.1, 1983.
+
+\bibitem{Mil3} Milner, R., {\em Changes to the Standard ML Core Language},
+Report ECS-LFCS-87-33,
+Laboratory for Foundations of Computer Science, 
+Computer Science Department, Edinburgh University, 1987.
+
+\bibitem{Mor} Morris, J.H., {\em Lambda Calculus Models of Programming Languages},
+MAC-TR-57 (Thesis), Project MAC, M.I.T., 1968.
+
+\bibitem{Pau} Paulson, L.C., {\em Logic and Computation: Interactive Proof with
+LCF}, Cambridge Tracts in Theoretical Computer Science 2, Cambridge University
+Press, 1987.
+
+\bibitem{Plo} Plotkin, G.D., {\em A Structural Approach to Operational Semantics},
+Technical Report DAIMI FN-19, Computer Science Department, \AA rhus University,
+1981.
+
+\bibitem{Rob} Robinson, J.A., {\em A Machine-oriented Logic based upon the
+Resolution Principle}, Journal of ACM, Vol 12, No 1, pp23-41, 1965. 
+
+\bibitem{ST} Sannella, D.T. and Tarlecki, A., {\em Program Specification
+and Development in Standard ML}, 
+Proc 12th ACM Symposium on Principles of
+Programming Languages, New Orleans, 1985.
+
+\bibitem{Tof} Tofte, M., {\em Operational Semantics and Polymorphic Type
+Inference}, PhD Thesis CST-52-88, 
+Computer Science Department, Edinburgh University, 1988. (Also appears as
+Report ECS-LFCS-88-54 of the Laboratory for Foundations of Computer Science.)
+
+\bibitem{Tof-a} Tofte, M., {\em Type Inference for Polymorphic References}
+(To appear in Information and Computation)
+
+\bibitem{Wik} Wikstr\"{o}m, \AA., {\em Functional Programming using Standard
+ML}, Prentice Hall, 1987.
+\end{thebibliography}
+
+
+
+

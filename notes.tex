@@ -1,0 +1,634 @@
+\documentstyle[12pt]{article}
+\title{The Semantics of Standard ML\\RECORD OF CHANGES AND VERSIONS}
+\author{Mads Tofte}
+\begin{document}
+\maketitle
+\begin{center} \bf 1987 \end{center}
+\vspace{1cm}
+\begin{description}
+\item{13 August 87} ``The Semantics of Standard ML, Version 1'' 
+by Robert Harper, Robin Milner and Mads Tofte. ECS-LFCR-87-36,
+August 87.
+
+\item{13 August 87 (annotated).} A copy of [13 August 87]
+annotated by RM. There are annotations in blue (regarding
+exceptions) and other corrections (marked in red).  
+
+\item{25 November 87} ``The Semantics of Standard ML''. The semantics
+of 13 August changes so as to accomodate exception constructors  (MacQueen's
+proposal).  
+All changes from [13 August 87] are taken from [13 August 87,
+annotated] (blue corrections only) and marked in the margin.
+Does not include polymorphic exceptions or references. 
+Copy sent of to MacQueen for approval 18 Jan 88. 
+Original with me.
+\end{description}
+
+\newpage
+\begin{center} \bf 1988 \end{center}
+\vspace{1cm}
+\begin{description}
+\item{21 June 88} ``The definition of Standard ML, Version 2''.
+I have done and checked Robin's corrections to [25 Nov 87] 
+as listed on my ``cover letter'' [ad 25 Nov 87].
+Also, I have done and checked the red corrections 
+of [13 August 87, annotated]. In addition the following changes.
+
+\begin{enumerate}
+\item
+Exceptions have monotypes only. Rule (30) and restriction 1
+in Section 4.9 have been modified accordingly. 
+
+\item
+The type constructor {\tt excn} has been changed to {\tt exn}.
+(I have maintained {\it exn} to range over exeption names.)
+
+\item
+The type {\tt exn} does not admit equality. This has been
+made explicit on the first page of appendix C.
+
+\item
+The third example of a real constant in Section 2.2 has been 
+corrected (RM had earlier corrected master copy by hand).
+
+\item
+Abstype should hide equality outside the with part. Changes to
+Section~4.7 and the present rule (19), formerly (21).
+
+\item
+The rule for constants in atomic patterns in the dynamic semantics
+of the core (rule 36 in Version 1) changed so as to make the
+types of constants more obvious.
+
+\item
+I have inserted sentences in Section 4.4 (Version 1) to the effect
+that the equality attribute of a bound type variable in a type
+function does not matter. Also, I have inserted sentences in Section 4.5
+(Version 1) to the effect that the equality attributes of bound type
+variables in type schemes do matter.
+
+\item
+My scheme for polymorphic references and exceptions tentatively
+included. See ``Polymorphic References and Exceptions in the
+ML Semantics'', 20 May 88, Mads Tofte, for a detailed list of
+changes. In particular, I have undone the above change (that
+exceptions have monotypes only) to allow exceptions
+to have imperative types. (30 May 88)
+
+\item
+Basic exception constructors changed to start with a capital
+letter (Bind, Match etc) in accordance with ``Unifying 
+Exceptions with Constructors in Standard ML (30 May)''.
+(30 May 88, mt)
+
+\item
+Semantics of programs, henceforth Section 8, included.
+Corrections to the semantics of modules as detailed in
+``Changes to ML Semantics to deal with Programs properly'',
+RM 17/5/88 with my added handwritten notes.(31 May 88, mt)
+
+\item
+Previously ``applied'' functor forms have been turned into
+derived forms and moved to Appendix A. 
+The previously ``pure'' forms new appear directly in the grammar. (1 June 88,mt)
+
+\item
+Comments added in the section ``Closure Restrictions'' to clarify
+the closure restrictions.  Comments also added on the rules for
+signature declaration, functor specification and functor declaration
+in the static semantics for modules for the same purpose.
+(2 June 88, mt)
+
+\item
+The sentence stating that there are no derived forms form modules (first page
+in the introduction) has been replaced by a reference to Appendix A. 
+(6 June 88)
+
+\item
+In Figure 2, Pats has been changed to Pat. (6 June  88)
+
+\item
+A section ``Signature Matching'' has been inserted in the static
+semantics for modules, after Section 5.10 (Enrichment). This defines
+matching as a combination of instantiation and enrichment.
+Also, the definition of functor matching in Section 5.13 has been
+simplified using the notion of matching. (8 June 88, mt)
+
+\item
+Section 6.2 (Simple Objects), below figure. The following has been deleted:
+`` or of a failing attempt to handle an exception with a handle rule''.
+(9 June 88)
+
+\item
+Section 6.3, last paragraph. ``completely separately'' replaced by ``separately'', because of the new Section 8. (9 June 88)
+
+\item
+Page 55, Version 1. Wrong heading ``Labelled Patterns'' replaced by
+``Pattern Rows''. (9 June 88)
+
+\item
+Page 40, Version 1. Heading ``Structure-level Bindings'' replace by
+``Structure Bindings'' in accordance with page 15 and page 60.
+(9 June 88)
+
+\item
+Page, 64, Figure 18. The derived form for raise expression has been 
+deleted. (9 June 88)
+
+\item
+Page 65, Figure 19. Wrong heading ``LABELLED PATTERNS'' has been replaced by
+``PATTERN ROWS''. Moreove, in the same figure, ``TYPES'' has been
+replaced by ``TYPE EXPRESSIONS''.(9 June 88)
+
+\item
+In the display in Section 6.4 (Basic Values), the \verb+\+ has
+been replace by \verb+/+ (division of reals). (13 June 88)
+
+\item
+Section 2.5, the first sentence. A reference to Section 2.7 has been
+added, since \verb+#+{\it lab} introduces a new lexical item. This has
+been added to Section 2.7. (13 June 88)
+
+\item
+Section 3. Since there are at present derived forms for functors,
+the introduction to Section 3 has been changed. (13 June 88)
+
+\item
+Rule 91 (Version 1) has been corrected. (The result part of
+a functor signature resulting from the elaboration of a 
+functor signature expression must be principal).(14 June 88)
+
+\item
+The heading ``Functor Signatures'' in Figure 20 (current version)
+concerning derived forms has been replace by ``Functor Signature
+Expressions''. Also, the compound ``functor signatures'' has
+been replaced by ``functor signature expressions'' on the first
+page of Appendix A (Derived Forms). (15 June 88)
+
+\item
+We use the term ``constructor binding'' instead of  ``datatype construction''.
+The syntactic classes are renamed accordingly. 
+
+\item
+The title of the document has been changed to ``The definition
+of Standard ML''. (15 June 88)
+
+\item
+Appendix C, bottom of first page: \verb+io_failure+ has been changed to
+\verb+Io+. (15 June 88)
+
+\item
+Section 3.1 (Reseved Words, Syntax of Modules). The {\tt open}
+has been removed since it is already in the core langugae.
+(15 June 88)
+
+\item
+Section 8. Changed ``store'' to ``state'' throughout. (16 June 88).
+
+\item
+Syntax of the Core, Figure 2. Replaced ``type expression rows''
+by ``type-expression rows''. (17 June 88).
+
+\item
+Page 75 (current version). Templates added at the top of Figure 26 and 27.
+(17 June 88).
+
+\item
+Section 7.1 (Reduced Syntax, Dynamic semantics of modules), first
+item. The ``are omitted from exception bindings'' has been replaced
+by ``are omitted from exception descriptions''. (20 June 88)
+\end{enumerate}
+
+\item{24 June 88.}``The definition of Standard ML, Version 2''.
+Most of the following changes are prompted by Robin's reading
+of [21 June]. 
+\begin{enumerate}
+\item 
+The preface to Version 2 has been revised following RM's notes (not
+followed to the letter, however). (23 June 88)
+
+The term ``functor matching'' has been replaced by ``functor signature
+matching'' throughout. (23 June 88)
+
+\item
+The term ``store attribute'' has been replaced by ``imperative attribute''.
+(23 June 88)
+
+\item
+Page 44, rule 85 regarding type sharing. The premise corrected. $\theta$s
+have been inserted. A comment to the rule has been inserted. This change
+is also mentioned in the preface to Version 2.
+(23 June 88)
+
+\item
+The varible {\it exn}, which ranges over exception names, has been
+renamed to {\it en}. (23 June 88)
+
+\item
+The class Exn of exception names has been renamed to ExName.
+ (23 June 88)
+\item
+The variable {\it exns}, which ranges over finite sets of exception
+names, has been renamed to {\it ens}.
+ (23 June 88)
+\item 
+The class ExnSet of finite sets of exception names has been renamed
+to ExNameSet in accordance with TyNameSet , NameSet and StrNameSet.
+ (23 June 88)
+\item
+The class BasExn of basic exception names has been renamed
+to BasExName.
+ (23 June 88)
+\end{enumerate}
+
+\item{July 19} Several small changes to June 24.
+\begin{enumerate}
+\item The ``definition'' changed to ``Definition'' in the title of the
+document (also in the preface to Version 2). The title has been moved
+to the front. Page numbering is changed, page 1 is the first page of
+Section 1.
+
+\item \# introduced as keyword and allowed in symbolic identifiers.
+
+\item A comment about consistency added for the type sharing rule.
+
+\item Subscripts 1 and 2 interchanged in the last paragraph of Section 
+5.11.
+\end{enumerate}
+
+\item{1 August 88.} Several minor changes to July 19, as listed in
+the annotated copy of the latter as detailed in 4 handwritten sheets
+of paper. 
+
+Two copies printed on the Plw16 3 August 88.
+\end{description}
+
+\newpage
+\begin{center} \bf 1989 \end{center}
+\vspace{1cm}
+\begin{description}
+\item{4 April 89} Began changes towards ``The definition of Standard ML, Version 3'',
+starting from Version 2. (Page refs to version 2)
+\begin{enumerate}
+\item Changed version number in title to 3 and date to 1 May 89.
+\item Did the corrections of the errata with modifications indicated in 
+``MORE CORRECTIONS''.
+\item Several changes to the two first paragraphs of page 81.
+\item Small changes on pages iv, v, 4, 5 ( * is excluded from TyCon ), 7,
+11, 14, 19, 31 (remark to the effect that change of bound names does
+not change arity or equality attribute), 32 (change of the definition
+of consistency), 36, 39, 41, 48, 61, 62, 63, 65, 66, 67, 68, 72, 73, 74, 77,
+79, 80, 81, 88 as marked in ``MORE CORRECTIONS''.
+\end{enumerate}
+\item{5 April 89} More corrections:
+\begin{enumerate}
+\item Introduced the basic exceptions Abs and Neg, pages 46, 74, 87 and 92.
+\item Replaced all occurrences of `keyword' by `reserved word', pages 6 and 10.
+\item To avoid that the parsing of \quad   local in end \quad declarations
+      interact with the requirement that there be no free imperative type
+      variables, the side condition on rule 55 (structure-level declarations)
+      has been moved to the rules for top-level declarations (rules 96--98).
+      See pages 37, 42, 43, 91, 93 and 96.
+\item Clarification concerning the disambiguation in parsing inserted
+      in Appendix B, page 66.
+\item The rules for the use of the reserved word {\tt op} have
+      been clarified, see page 6.
+\item A new section ``Core language Programs'' has been added at the
+      end of Section 8, see page 62.
+\end{enumerate}
+\item{6 April '89} More corrections:
+\begin{enumerate}
+\item Introduced syntax for long and short identifiers. Pages
+      4, 91, 92, 94
+\item Type constraints on non-expansive expressions are allowed
+      and do not make the expression expansive (page 20).
+\item Section 2.9 (Syntactic Restrictions), page 8, last bullet:
+      The function expression on the right-hand side of a recursive
+      value binding is allowed to be constrained by type constraints.
+\item A new subsection ``Type Explication'' has been inserted in the
+      static semantics of modules, after Section 5.7, page 33.
+\item Other changes concerning type explication: Comment added in
+      Section 5.8, page 33; comment added in Section 5.11, page 34.
+\item Small correction in the second and third paragraph of the comment
+      on the rule for functor application (page 37).
+\item New inference rule for signature expressions added (page 38).
+\item Rule 60 concerning structure bindings (page 38) altered so
+      as to make sure that the signature expression elaborates to
+      a type-explicit signature.
+\item Similar change to rule 66 concerning signature bindings (page 39).
+      The comment adjusted accordingly.
+\item Similar change to rule 91 concerning functor signature 
+      expressions (page 42). Comment added.
+\item Similar change to rule 95 concerning functor bindings (page 42).
+      The comment adjusted accordingly.
+\item Several changes to make sure that {\tt op} does not occur in
+      signatures.  Details are as follows:
+\item A new syntactic class ConDesc of constructor descriptions has
+      been introduced (page 11).
+\item The syntax for specifications (Figure 7, page 13) has been modified
+      by changing the syntax of data descriptions and introducing a
+      rule for constructor descriptions.
+\item The syntactic restriction (page 12, second bullet) has been
+      extended to include constructor descriptions.
+\item An optional {\tt op} has been included in the syntax for
+      exception bindings, page 8 and 68. 
+\item Rule 81 concerning Datatype Descriptions has been adjusted
+      to the new syntax. Page 40.
+\item New rule for static semantics of constructor descriptions has
+      been added after rule 81.
+\item Constructor descriptions added to the list in the third bullet 
+      of Section 7.1 (page 55).
+\item Introduction of special constants (scon and Scon); many changes:
+\item Indtroduce scon and Scon (pages 3, 88, 93, 94).
+\item Syntax for scon as atomic expression introduced (page 8).
+\item Syntax for scon as atomic pattern introduced (page 9).
+\item Added paragraph at the end of 4.1 (page 16) giving types
+      to special constants.
+\item Added new rule for scon as atomic expression before rule 1
+      (page 23)
+\item Added new rule for scon as atomic pattern after rule 32
+      (page 28).
+\item Introduced special values (sv and SVal), page 44 and Figure 13,
+      page 45.
+\end{enumerate}
+\item{7 April '89,} More changes:
+\begin{enumerate}
+\item New rule for special constants as atomic expressions added, page 48,
+      before rule 99.
+\item Two new rules for special constants as atomic pattern added, page 52,
+      after rule 135.
+\item scon included in the grammar for atomic expressions (page 67) and
+      atomic patterns (page 69).
+\item Last blob of Figure 23, page71, concerning the types of special 
+      constants has been deleted. (These types are given by the function
+      called type).
+\item Figure 25, page 72, modified so that the constructor environments
+      of int, real and string become empty.
+\item Small insertion on page 74, firt para., first line.
+\item The blob on equality, page 75, rewritten.
+\item Page 46, several replacements of mathematical = sign by ML = sign.
+\item page 2, l.3,  small correction.
+\item page 5, Section 2.5, line 2, small correction.
+\item page 5, Section 2.6, l -2: insert : ``(Note that qualified identifiers
+      never have infix status.)''
+\end{enumerate}
+\item{10 Apr 89} Late 7 Apr I printed a version with the corrections
+so far (including many changes to the index) all of which are marked
+in ``MORE CORRECTIONS''.  Checking the changes, led to more corrections:
+(references now to the version printed 7 April).
+\begin{enumerate}
+\item Several changes in index.ml (the ML program) so that entries
+      are collapsed to intervals, when possible and so that intervals
+      will not be trivial.
+\item page 4, Sec. 3.4, line 7 : ``The qualified identifiers''
+\item page 30, Sec. 4.11, bullet 2, line 1: {\tt |}, twice
+\item page 33, line -3, ``is type-explicit and every name in $N_1$ occurs
+      in $S_1$''
+\item page 34, line -2, same change
+\item page 37, line 4, ``is type-explicit and N subseteq names $S_f$''
+\item page 39, rule for signature bindings, conclusion: repl. 
+      $(N)S$ by $\Sigma$.
+\item page 40, rule for seq. spec, second premise: change subscript
+      from 1 to 2.
+\item page 43, comment on rule for Functor Bindings, l4 ``can match (N)S 
+      (assuming N subseteq names S).''
+\item page 45, Sec. 6.1, last bullet: change variables to classes (also
+      in index)
+\item page 54, comments: ``because of rule 142, rule ''
+\item page 55, comments: ``because of rule 142, rule ''
+\item page 56, Sec. 7.1, last bullet, change variables to classes (also
+      in index).
+\item page 60, rule for local spec, second premise: change 1 to 2
+\item page 64, bullet 3: ``syntax class of declarations {\it dec}''
+\item page 89, entry for $\{\ \}$ in pattern: change 53 to 54.
+\item page 91, entry for condesc: add 56
+\item page 91, entry for ConDesc: add 56
+\item page 91, entry for constructor description: add 56
+\item page 91, entry for core language programs: move below subitems
+\item page 92, entry for equality: change basics value and identifier
+      to of values
+\item page 92, entry for equality of type function: insert 41
+\item page 92, entry for exception constant as atomic pattern: change
+      53 to 53-54.
+\item page 93, entry for FAIL: add 54
+\item page 94, entry for identifier, long: insert 64
+\item page 94, entry for imptyvars: replace 43-43 by 43
+\item page 95, entry for open: add 40
+\item page 96, entry for polymorphic references: repl. 43-43 by 43
+\item page 96, entry for polymorphic exceptions: repl. 43-43 by 43
+\item page 96, entry for (r) record : repl. 53 by 54
+\item page 96, entry for  record (r): repl. 53 by 54
+\item page 96, entry for record as atomic pattern: repl. 53 by 54
+\item page 97, entry for signature (Sigma), delete extra 35
+\item page 99, entry for type variable, imperative: replace 43-43 by 43
+\end{enumerate}
+\item{11 April 89} More changes
+\begin{enumerate}
+\item Changed index.ml so that an interval of pages from i to i+1 is
+      printed i, i+1 (rather than i--i+1).
+\item page 93, entry for FAIL: add 52
+\item page 96, entry for polymorphic exceptions: repl. 43-41 by 41, 43
+\item page 96, entry for pattern matching: repl. 45, 47-30 by 30, 45,47
+\end{enumerate}
+\item{14 April '89} Changes to the version printed 7--11 April, following
+Robin's annotations.
+\begin{enumerate}
+\item page iii, several minor changes.
+\item page vi, item 15: yet an attempt to get rid of blanks
+\item page 1, several minor changes.
+\item page 3, Section 2.2 (Special Constants), third paragraph, after first
+sentence; insert:
+``We assume an underlying alphabet of 256 different characters (numbered 
+0 to 255) which is such that the characters with numbers 0 to 127 coincide
+with the ASCII character set.''
+\item page 3, Section 2.2 (Special Constants), fourth line of display; replace
+	line by:
+\begin{quote}
+	ddd The single character with number ddd (3 decimal digits
+             denoting an integer in the interval [0,255]).
+\end{quote}
+\item page 4, removed the recent definition of short identifiers
+\item page 6, line 2 and 4: similar adjustments
+\item page 94, entry for identifier: replace ``short'' by ``qualified''
+\item page 12, Section 3.5, second bullet: replace condesc by datdesc.
+\item page 30, Section 4.11, second bulled, line 1: use cdots
+\item page 32, Section 5.3: change the definition of well-formed
+      signature.
+\item page 33, Section 5.9, line -4: delete ``and every name in N1
+      occurs in S1''
+\item page 34, Section 5.12, line -2: same change
+\item page 37, comment (55): delete ``and  N subseteq names Sf''
+
+
+
+\item page 38: replace ``must elaborate'' by ``is elaborated''
+\item page 43, comment on  (99): delete ``(assuming N subseteq names S)''
+\item page 45, line -6: replace second ``denoted by'' by ``written''
+\item page 47, Section 6.5 : more space in display
+\item page 54, rule 149 (paraenthesised pattern): change VE to VE/FAIL
+      both in the premise and in the conclusion.
+\item page 62, line -9: replace ``ranged over BDyn'' by ``and let us
+      use BDyn to range over DynamicBasis.''
+\item page 63, line 9: replace ``).'' by ``.)''
+\item page 64, bullet 4.: delete ``short'' and end the sentence
+      ``, i.e. omit qualified identifiers''.
+\item page 66, Figure 15, entry for {\tt if}: number subsexpression 1, 2 and 3.
+\item page 68, line -2: ``Suppose the lexical sequence''
+\item page 68--89: use cdots
+\item page 69, line 1: ``where $\exp$ stands for a lexical sequence which 
+      is already determined as a subphrase (if necessary by applying the 
+      precedence rule).''
+\item page 78, bullet for equality: small adjustments
+\item page 89, entry for = : first ref made into an entry by itself
+\item page vi, item 15: yet another attempt to get rid of blanks!!!!
+\item the index: replace ``coersion'' by ``coercion'' (twice)
+
+
+\item page 77, bullet for chr(i); replace by:
+\begin{quote}        
+        chr(i) returns the character numbered i (see Section 2.2) 
+	if i is in the interval [0, 255], and the packet [Chr] otherwise.
+\end{quote}
+\item page 78, bullet for ord(s); replace by:
+\begin{quote}
+        ord(s) returns the number of the first character in s (an integer
+	in the interval [0,255], see Section 2.2), or the packet [Ord]
+	if s is empty.
+\end{quote}
+\end{enumerate}
+\end{description}
+\begin{description}
+\item{8 May 89} Tiny corrections:
+\begin{enumerate}
+\item page iii, middle: replace ``overriden'' by ``overridden''.
+\item page 1, par. beginning ``A further factoring'', second sentence:
+new punctuation.
+\item page 4, Sect. 2.4: replace ``identifers'' by ``identifiers''.
+\item page 32, Sect. 5.2: replace reference to the concept of disjoining
+names (which was deleted earlier) by its definition.
+\item page 47, Sect. 6.5, third line after display: ``The exception
+(Io,s)''. Similar on page 79.
+\item page 54, topmost comments: start with ``(142),(145),(147)''
+\item page 66, Fig. 15, entry for {\tt if}: correct indices on the
+right-hand side {\tt case} form.
+\item page 79, entry for end of stream: slightly revised description.
+\end{enumerate}
+\end{description}
+\begin{center}
+\large Version 4 (for publication)
+\end{center}
+\begin{description}
+\item{25 July 89} 
+\begin{enumerate}
+\item Page 3. Several small changes to clarify what printable characters
+are and what \verb+\^+$c$ means.
+\item Page5, last par. of  Sect. 2.4. The word ``parser'' has been
+replace by ``compiler'' as the classification of variables,
+value constructors and exception constructors cannot be done
+in normal context free parsing (the scope of constructors is more 
+conveniently dealt with during type checking).
+\item Page 9, Fig. 4.  For uniformity, <op> has been allowed in front
+of longcon and longexcon in atpat.
+\item Page 21--22. Section 4.9 has been substantially revised
+in reaction to Simon Finn's comments on the well-formedness
+of type structures.  There are new concepts of type structures
+being well-formed and of type structures and type environments
+respecting equality.  Rules 19 and 20 have been given as side
+condition that TE respect equality. The comments to these
+rules have been revised accordingly.
+\item Page 33, Sect. 5.3. The two first lines, which referred to
+the well-formedness of type environenments, have been deleted.
+item Page 35, Sect.5.13.  The definition of principal signatures
+has been modified to allude to structures respecting equality.
+\item Page 72. Inserted <op> in front of constants and exception 
+constants in atomic patterns.
+\item Index: inserted entries for \verb;^;, control charater and printable
+character. Also entries for respecting equality. Entry for well-formed
+type environments deleted.
+\end{enumerate}
+\item{27 July} More changes
+\begin{enumerate}
+\item Page 2. Last paragraph of the Introduction has been rewritten.
+\item Pages 3--4. Slanted font for defined terms in Section 2 (integer 
+constant, real constant,  string constant, comment and identifiers).
+\item Page 21. The title of Sect. 4.9 has been shortened to
+``Type Structures and Type Environments''.
+\item Page 33. Sect. 5.5 has been modified to require the {\sl
+combined} admissibility of the basis and the result of the elaboration.
+\item Page 35. Section on Principal Signatures has been extended to
+cover the notion of a basis {\sl covering} a structure.  This is 
+needed in order to get signatures. In Version 3 there are {\sl not}
+principal signatures, due to examples like
+\begin{quote}
+\begin{verbatim}
+structure A =
+  struct
+    structure B1 = struct end
+    structure B2 = struct end
+  end 
+structure A: sig structure B1: sig end end = A;
+signature Sig = 
+ sig
+  structure A1 : sig structure B1: sig end
+                     structure B2: sig end
+                 end
+  sharing A1 = A
+ end;
+\end{verbatim}
+\end{quote}
+\end{enumerate}
+\item{3 August, more changes:}
+\begin{enumerate}
+\item Page 2. `in the basis' repl. by `against the background provided'
+\item Page 2, last paragraph about `claims' adjusted
+\item Page 23, side conditions in slant.
+\item Page 17, Remark about $\cup$ before figure
+\item Page 21, $con(v)$ repl. by $(con,v)$. Definition of `respecting equality' added.
+Definition of what it means for $TE$ to maximise equality added. 
+\item Page 25: repl. `respects' by `maximises' in rules 19,20
+\item Page 34, Sect. 5.9: repl. `we claim' by `it can be shown'
+\item Page 35, Sect. 5.12: repl. `we claim' by `it can be shown'
+\item Page 35, Sect. 5.13: {\bf Principal signatures rewritten}
+\item Page 38, rule 65, repl. `principal' by `equality-principal'
+\item Page 30, end of Sect. 4.12, slight rephrasing
+\item Page 47, line -5, `nil' made teletype
+\item Page 39, rule 69: slight change to mention equality principal
+\item Page 43, rule 99: slight change to mention equality principal
+\end{enumerate}
+\item{4 August, more changes:}
+\begin{enumerate}
+\item End of Sect. 4.9: Replace Abs(E,TE) by Abs(TE,E) twice. Replace E+Abs(TE)
+by Abs(TE)+E. Sililar change in rule 20.
+\item replace `implementor' by `implementer' throughout.
+\item page 26, comment on rule 20:  page reference changed from 21 to 22.
+\item page 35, small corrections to `Principal Signatures'
+\item Index: several changes.
+\end{enumerate}
+\item{10 August 1989, More corrections; page numbers refer to version 3}
+\begin{enumerate}
+\item Robin's new preface has replaced the previous three prefaces.
+\item page 30, Section 4.12. Local definition of enrichment for
+the core language has been inserted. Also two new index entries.
+Also shortening of Sect. 4.11 to fit it all in one page.
+\item Page 37, inserted `for dec' in rule 57
+\item page 40, repl. hypotesis by hypotesis.
+\item page 40, insert $m_i$ in comment to rule 79.
+\item page 51, comment on rules 112-118: deleted last line ', so v will be
+$\ldots$  '
+\item Sect. 5.5 about admissibility has been strengthened to require
+the admissibility of entire proofs, as far as signature elaborations
+are concerned.
+\item Sect. 5.13 about Principal signatures: items 1 and 2 have
+been shortened.
+\end{enumerate}
+\item 21 August 89 (after camera-ready had been sent)
+\begin{enumerate}Changed Sigma_0 to Sigma on page 36 in the
+definition of equality-principal signature. Robin sent that page
+to Prior.
+\end{enumerate}
+\end{description}
+\begin{description}
+\item{4 Sept 89}, page 3, section 2.2, second par. line 4.  Removed the 
++ in front of 3.32E5. Also decreased hoffset by 8mm to get centering
+on page.
+\end{document}

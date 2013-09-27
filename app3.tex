@@ -1,0 +1,208 @@
+%\appendix
+\section{Appendix: The Initial Static Basis}
+\label{init-stat-bas-app}
+We\index{73.1} shall indicate components of the initial basis by the subscript 0.
+The initial static basis is
+\[ \B_0\ =\ (\M_0,\T_0),\F_0,\G_0,\E_0\]
+where
+\begin{itemize}
+\item $\M_0\ =\ \emptyset$
+\item $\T_0\ =\ \{\BOOL,\INT,\REAL,\STRING,\LIST,\REF,\EXCN,\INSTREAM,\OUTSTREAM\}$
+\item $\F_0\ =\ \emptymap$
+\item $\G_0\ =\ \emptymap$
+\item $\E_0\ =\ \longE{0}$
+\end{itemize}
+The members of $\T_0$ are type names, not type constructors; for convenience
+we have used type-constructor identifiers
+to stand also for the type names which are bound to them in the initial
+static type environment $\TE_0$.  Of these type names,
+~\LIST~ and ~\REF~
+have arity 1, the rest have arity 0;  all except \EXCN, \INSTREAM~ 
+and ~\OUTSTREAM~ admit equality.
+
+The components of $\E_0$ are as follows:
+\begin{itemize}
+\item $\SE_0\ =\ \emptymap$
+\item $\VE_0$ is shown in Figures~\ref{stat-ve} and \ref{stat-veio}. Note that
+      $\Dom\VE_0$  contains those identifiers ({\tt true},{\tt false},{\tt nil},
+      \verb+::+) which are basic value constructors,
+      for reasons discussed in Section~\ref{stat-proj}. 
+      $\VE_0$ also includes $\EE_0$, for the same reasons.
+\item $\TE_0$ is shown in Figure~\ref{stat-te}. Note that the type
+      structures in $\TE_0$ contain the type schemes of all basic value
+      constructors.
+\item $\Dom\EE_0\ =\ \BasExc$~, the set of basic exception names listed in
+Section~\ref{bas-exc}.
+In each case the associated type is ~\EXCN~, except that
+~$\EE_0({\tt Io})=\STRING\rightarrow\EXCN$.
+\end{itemize}
+
+\begin{figure}
+\begin{tabular}{|rl|rl|}
+\multicolumn{2}{c}{NONFIX}&     \multicolumn{2}{c}{INFIX}\\
+\hline
+$\var$     & $\mapsto\ \tych$    
+                          & $\var$ & $\mapsto\ \tych$\\
+\hline
+{\tt map}  & $\mapsto\ \forall\atyvar\ \btyvar.\ (\atyvar\to\btyvar)\to$
+                          &     \multicolumn{2}{l|}{Precedence 7 :} \\
+           & \qquad$\atyvar\ \LIST\to\btyvar\ \LIST$
+                          & \verb+/+    & $\mapsto\ \REAL\ \ast\ \REAL
+                                                    \to\REAL$\\
+{\tt rev}  & $\mapsto\ \forall\atyvar.\ \atyvar\ \LIST\to\atyvar\ \LIST$
+                          & {\tt div}   & $\mapsto\ \INT\ \ast\ \INT\to\INT$\\
+{\tt not}  & $\mapsto\ \BOOL\to\BOOL$
+                          & {\tt mod}   & $\mapsto\ \INT\ \ast\ \INT\to\INT$\\
+\verb+~+   & $\mapsto\ \NUM\to\NUM$
+                          & \verb+*+    & $\mapsto\ \NUM\ \ast\ \NUM\to\NUM$\\
+{\tt abs}  & $\mapsto\ \NUM\to\NUM$
+                          &    \multicolumn{2}{l|}{Precedence 6 :} \\
+{\tt floor}& $\mapsto\ \REAL\to\INT$
+                          & \verb-+-    & $\mapsto\ \NUM\ \ast\ \NUM\to\NUM$\\
+{\tt real} & $\mapsto\ \INT\to\REAL$
+                          & \verb+-+    & $\mapsto\ \NUM\ \ast\ \NUM\to\NUM$\\
+{\tt sqrt} & $\mapsto\ \REAL\to\REAL$
+                          & \verb+^+    & $\mapsto\ \STRING\ \ast\ \STRING
+                                                    \to\STRING$\\
+{\tt sin}  & $\mapsto\ \REAL\to\REAL$
+                          &     \multicolumn{2}{l|}{Precedence 5 :} \\
+{\tt cos}  & $\mapsto\ \REAL\to\REAL$
+                          & \verb+::+   & $\mapsto\ \forall\atyvar.
+                                          \atyvar\;{\ast}\;\atyvar\;\LIST
+                                          \to\atyvar\;\LIST$\\
+{\tt arctan}
+           & $\mapsto\ \REAL\to\REAL$
+                          & \verb+@+    & $\mapsto\ \forall\atyvar.\
+                                          \atyvar\ \LIST\ $\\
+{\tt exp}  & $\mapsto\ \REAL\to\REAL$
+                          &             & $\qquad\ast\ \atyvar\ \LIST\to
+                                           \atyvar\ \LIST$\\
+{\tt ln}   & $\mapsto\ \REAL\to\REAL$
+                          & \multicolumn{2}{l|}{Precedence 4 :}\\
+{\tt size} & $\mapsto\ \STRING\to\INT$
+                          & \verb+=+    & $\mapsto\ \forall\aetyvar.\
+                                          \aetyvar\ \ast\ \aetyvar\to\BOOL$\\
+{\tt chr}  & $\mapsto\ \INT\to\STRING$
+                          & \verb+<>+   & $\mapsto\ \forall\aetyvar.\
+                                          \aetyvar\ \ast\ \aetyvar\to\BOOL$\\
+{\tt ord}  & $\mapsto\ \STRING\to\INT$
+                          & \verb+<+    & $\mapsto\ \NUM\ \ast\ \NUM
+                                                                  \to\BOOL$\\
+{\tt explode}
+           & $\mapsto\ \STRING\to\STRING\ \LIST$
+                          & \verb+>+    & $\mapsto\ \NUM\ \ast\ \NUM
+                                                                  \to\BOOL$\\
+{\tt implode}
+           & $\mapsto\ \STRING\ \LIST\to\STRING$
+                          & \verb+<=+   & $\mapsto\ \NUM\ \ast\ \NUM
+                                                                  \to\BOOL$\\
+\verb+!+   & $\mapsto\ \forall\atyvar.\ \atyvar\ \REF\to\atyvar$
+                          & \verb+>=+   & $\mapsto\ \NUM\ \ast\ \NUM
+                                                                  \to\BOOL$  \\
+\REF       & $\mapsto\ \forall\ \aityvar\ .\ \aityvar\to\aityvar\ \REF$
+                          & \multicolumn{2}{l|}{Precedence 3 :} \\
+{\tt true} & $\mapsto\ \BOOL$
+                          & \verb+:=+   & $\mapsto\ \forall\atyvar.\
+                                          \atyvar\ \REF\ \ast\ \atyvar\to\UNIT$\\
+{\tt false}& $\mapsto\ \BOOL$
+                          & {\tt o}     & $\mapsto\ \forall\atyvar\ \btyvar\ 
+                                             \ctyvar.\ (\btyvar\to\ctyvar)$\\
+{\tt nil}  & $\mapsto\ \forall\atyvar.\ \atyvar\ \LIST$ 
+                          &             & \qquad
+                                          $\ast\ (\atyvar\to\btyvar)\to(\atyvar\to\ctyvar) $ \\
+\hline
+\end{tabular}
+\vspace{3pt}
+
+Notes:
+\begin{itemize}
+\item In type schemes we have taken the liberty of writing
+$\ty_1\ast\ty_2$ in place of
+$\{\mbox{\tt 1}\mapsto\ty_1,\mbox{\tt 2}\mapsto\ty_2\}$.
+
+\item  An identifier with type involving ~\NUM~ stands for two functions --
+one in which ~\NUM~ is replaced by ~\INT~ in its type,
+and another in which ~\NUM~ is replaced by ~\REAL~ in its type. 
+Sometimes an explicit type constraint will be needed if the
+surrounding text does not determine the type of a particular
+occurrence of \verb-+- (for example). For this purpose, the
+surrounding text is no larger than the enclosing top-level
+declaration; an implementation may require that a smaller
+context determines the type.
+%In the case
+%that both types can be inferred for an occurrence of the identifier, an
+%explicit type constraint is needed to determine which type is intended.
+%version 2: \item The type schemes associated with special
+%constants are given in  Figure~\ref{stat-te} which shows the initial
+%static type environment.
+\end{itemize}
+\caption{Static $\VE_0$ (except for Input/Output and $\EE_0$)\index{74}}
+\label{stat-ve}
+\end{figure}
+ 
+\begin{figure}
+\begin{center}
+\begin{tabular}{|rl|}
+\hline
+$\var$            & $\mapsto\ \tych$\\
+\hline
+{\tt std\_in}     & $\mapsto\ \INSTREAM$\\
+{\tt open\_in}    & $\mapsto\ \STRING\to\INSTREAM$\\
+{\tt input}       & $\mapsto\ \INSTREAM\ \ast\ \INT\to\STRING$\\
+{\tt lookahead}   & $\mapsto\ \INSTREAM\to\STRING$\\
+{\tt close\_in}   & $\mapsto\ \INSTREAM\to\UNIT$\\
+{\tt end\_of\_stream}
+                  & $\mapsto\ \INSTREAM\to\BOOL$\\
+\multicolumn{2}{|c|}{}\\
+{\tt std\_out}    & $\mapsto\ \OUTSTREAM$\\
+{\tt open\_out}   & $\mapsto\ \STRING\to\OUTSTREAM$\\
+{\tt output}      & $\mapsto\ \OUTSTREAM\ \ast\ \STRING\to\UNIT$\\
+{\tt close\_out}  & $\mapsto\ \OUTSTREAM\to\UNIT$\\
+\hline
+\end{tabular}
+\end{center}
+\vspace{3pt}
+\caption{Static $\VE_0$ (Input/Output)\index{75.1}}
+\label{stat-veio}
+\end{figure}
+ 
+\begin{figure}
+\begin{center}
+\begin{tabular}{|rll|}
+\hline
+$\tycon$   & $\mapsto\ \{\ \typefcn$, & $\{\con_1\mapsto\tych_1,\ldots,\con_n\mapsto\tych_n\}\ \}\quad (n\geq0)$\\
+\hline
+\UNIT      & $\mapsto\ \{\ \Lambda().\{ \}$,
+                                      & $\emptymap\ \}$ \\
+\BOOL      & $\mapsto\ \{\ \BOOL$,    & $\{\TRUE\mapsto\BOOL,
+                                         \ \FALSE\mapsto\BOOL\}\ \}$\\
+\INT       & $\mapsto\ \{\ \INT$,     & $\{\}\ \}$\\
+\REAL      & $\mapsto\ \{\ \REAL$,    & $\{\}\ \}$\\
+\STRING    & $\mapsto\ \{\ \STRING$,  & $\{\}\ \}$\\
+%version 2: \INT       & $\mapsto\ \{\ \INT$,     & $\{i\mapsto\INT\ ;\
+%                                           i$ an integer constant$\}\ \}$\\
+%\REAL      & $\mapsto\ \{\ \REAL$,    & $\{r\mapsto\REAL\ ;\
+%                                           r$ a real constant$\}\ \}$\\
+%\STRING    & $\mapsto\ \{\ \STRING$,  & $\{s\mapsto\STRING\ ;\
+%                                           s$ a string constant$\}\ \}$\\
+\LIST      & $\mapsto\ \{\ \LIST$,    & $\{\NIL\mapsto\forall\atyvar\ .\ \atyvar\ \LIST$,\\
+           &                          & $\ \mbox{\texttt+::+}\ \mapsto\forall\atyvar\ .
+                                           \ \atyvar\ast\atyvar\ \LIST
+                                           \to\atyvar\ \LIST\}\ \}$\\
+%\LIST      & \multicolumn{2}{l|}{$\mapsto\ \{\ \LIST,    \{\NIL\mapsto
+%                                         \forall\alpha.\alpha\LIST,\
+%                                           \ml{::}\mapsto\forall\alpha.
+%                                           \alpha\ast\alpha\LIST
+%                                           \to\alpha\LIST\}\ \}$
+%                               }\\
+\REF       & $\mapsto\ \{\ \REF$,     & $\{\REF\mapsto\forall\ \aityvar\ .\ 
+                                           \aityvar\to\aityvar\ \REF\}\ \}$\\
+\EXCN      & $\mapsto\ \{\ \EXCN$,     & $\emptymap\ \}$\\
+\INSTREAM  & $\mapsto\ \{\ \INSTREAM$,& $\emptymap\ \}$ \\
+\OUTSTREAM & $\mapsto\ \{\ \OUTSTREAM$,& $\emptymap\ \}$ \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Static $\TE_0$\index{75.2}}
+\label{stat-te}
+\end{figure}

@@ -1,0 +1,222 @@
+\section{Appendix: The Initial Dynamic Basis}
+\label{init-dyn-bas-app}
+We\index{76.1} shall indicate components of the initial basis by the subscript 0.
+The initial dynamic basis is
+\[ \B_0\ =\ \F_0,\G_0,\E_0\]
+where
+\begin{itemize}
+\item $\F_0\ =\ \emptymap$
+\item $\G_0\ =\ \emptymap$
+\item $\E_0\ =\ \E_0'+\E_0''$
+\end{itemize}
+$\E_0'$ contains bindings of identifiers to the basic values BasVal and
+basic exception names \BasExc; in fact
+~$\E_0'\ =\ \SE_0',\VE_0',\EE_0'$~, where:
+\begin{itemize}
+\item $\SE_0'\ =\ \emptymap$
+\item $\VE_0'\ =\ \{\id\mapsto\id\ ;\ \id\in$ BasVal$\}
+                             \cup\{$\verb+:=+ $\mapsto$ \verb+:=+$\}$
+\item $\EE_0'\ =\ \{\id\mapsto\id\ ;\ \id\in$ \BasExc$\}$
+\end{itemize}
+Note that $\VE_0'$ is the identity function on BasVal; this is because
+we have chosen to denote these values by the names of variables 
+to which they are initially bound.
+The semantics of these basic values (most of which are functions)
+lies principally in their behaviour under APPLY, which we describe below.
+On the other hand the semantics of \verb+:=+ is provided by a special
+semantic rule, rule~\ref{assapp-dyn-rule}.
+Similarly, $\EE_0'$ is the identity function on \BasExc, the set of
+basic exception names, because we have also chosen
+these names to be just those exception constructors to which they
+are initially bound.
+These exceptions are raised by APPLY as described below.
+
+ $\E_0''$ contains initial variable bindings which, unlike BasVal, are
+ definable in ML; it is the result of evaluating
+ the following declaration in the basis $\F_0,\G_0,\E_0'$.  For convenience,
+ we have also included all basic infix directives in this declaration.
+ \begin{verbatim}
+                infix  3  o
+                infix  4  = <> < > <= >=
+                infix  5  @
+                infixr 5  ::
+                infix  6  + - ^
+                infix  7  div mod / *
+
+                fun (F o G)x = F(G x)
+
+                fun nil @ M = M
+                  | (x::L) @ M = x::(L @ M)
+
+                fun s ^ s' = implode((explode s) @ (explode s'))
+
+                fun map F nil = nil
+                  | map F (x::L) = (F x)::(map F L)
+
+                fun rev nil = nil
+                  | rev (x::L) = (rev L) @ [x]
+
+                fun not true = false
+                  | not false = true
+
+                fun ! (ref x) = x
+ \end{verbatim}
+
+We now\index{77.1} describe the effect of APPLY upon each value
+$b\in\BasVal$.  For special values, we shall normally use $i$, $r$,
+$n$, $s$ to range over integers, reals, numbers (integer or real),
+strings respectively.  We also take the liberty of abbreviating
+``APPLY(\mbox{{\tt abs}}, $r$)'' to ``\mbox{{\tt abs}}($r$)'',
+``APPLY({\tt mod}, $\{\verb+1+\mapsto i,\verb+2+\mapsto d\}$)'' to
+``$i\ {\tt mod}\ d$'', etc. .
+\begin{itemize}
+\item \verb+~+($n$)~ returns the negation of $n$, or the 
+      packet ~[{\tt Neg}]~ if the result is out of range.
+\item \mbox{{\tt abs}}($n$)~ returns the absolute value of $n$, or
+      the packet ~[{\tt Abs}]~ if the result is out of range.
+\item {\tt floor}($r$)~ returns the largest integer $i$ not greater than $r$;
+      it returns the packet ~[{\tt Floor}]~ if $i$ is out of range.
+\item {\tt real}($i$)~ returns the real value equal to $i$.
+\item {\tt sqrt}($r$)~ returns the square root of $r$, or the packet
+      ~[{\tt Sqrt}]~ if r is negative.
+\item {\tt sin}($r$)~,  {\tt cos}($r$)~ return the result of the appropriate
+      trigonometric functions.
+\item {\tt arctan}($r$)~ returns the result of the appropriate
+      trigonometric function in the range $\underline{+}\pi/2$.
+\item {\tt exp}($r$)~, {\tt ln}($r$)~ return respectively the exponential
+      and the natural logarithm of $r$, or an exception packet
+      ~[{\tt Exp}]~ or ~[{\tt Ln}]~ if the result is out of range.
+\item {\tt size}($s$)~ returns the number of characters in $s$.
+\item {\tt chr}($i$)~ returns the character numbered $i$ (see Section~\ref{cr:speccon}) if $i$ is in the interval $[0,255]$, and the packet
+      ~[{\tt Chr}]~ otherwise.
+\item {\tt ord}($s$)~ returns\index{78.0} the number of the first character
+      in $s$ (an integer in the interval $[0,255]$, see Section~\ref{cr:speccon}), 
+      or the packet ~[{\tt Ord}]~ if $s$ is empty.
+\item {\tt explode}($s$)~ returns the list of characters (as single-character
+      strings) of which $s$ consists.
+\item {\tt implode}($L$)~ returns the string formed by concatenating all members
+      of the list $L$ of strings.
+\item The arithmetic\index{78.1} functions ~\verb+/+,\verb+*+,\verb-+-,\verb+-+~ all
+      return the results of the usual
+      arithmetic operations, or exception packets respectively
+      [{\tt Quot}], [{\tt Prod}], [{\tt Sum}], [{\tt Diff}]
+      if the result is undefined or out of range.
+\item $i\ {\tt mod}\ d$~,~$i\ {\tt div}\ d$~ return integers $r,q$
+      (remainder, quotient) determined by the equation $d\times q +r=i$,
+      where either $0\leq r<d$ or $d<r\leq 0$.  Thus the remainder has the
+      same sign as the divisor $d$. The packet [{\tt Mod}] or
+      [{\tt Div}] is returned if $d=0$.
+\item The order relations ~\verb+<+,\verb+>+,\verb+<=+,\verb+>=+~ return
+      boolean values in accord with their usual meanings.
+\item $v_1$\verb+ = +$v_2$~ returns {\TRUE} or {\FALSE} according as
+      the values $v_1$ and $v_2$ are, or are not, identical.
+      The type discipline (in particular, the fact that function types
+      do not admit equality) ensures that equality is only ever applied
+      to special values, nullary constructors, addresses, and values
+      built out of such by record formation and constructor application.
+%version 2:\item $v_1$\verb+ = +$v_2$~ returns the boolean value of $v_1=v_2$,
+%      where the equality of values (=) is defined recursively as follows:
+%      \begin{itemize}
+%      \item If $v_1,v_2$ are constants (including nullary constructors) or
+%      addresses, then $v_1=v_2$ iff $v_1$ and $v_2$ are identical.
+%      \item $(\con_1,v_1)=(\con_2,v_2)$ iff $\con_1,\con_2$ are identical and
+%            $v_1=v_2$.
+%      \item $r_1=r_2$ (for records $r_1,r_2$) iff $\Dom r_1=\Dom r_2$ and, for
+%            each $\lab\in\Dom r_1$, $r_1(\lab)=r_2(\lab)$.
+%      \end{itemize}
+%      The type discipline (in particular, the fact that function types
+%      do not admit equality) makes it unnecessary to specify equality in
+%      any other cases.
+\item $v_1$\verb+ <> +$v_2$ returns the opposite boolean value to
+      $v_1$\verb+ = +$v_2$.
+\end{itemize}
+It remains to define the effect of APPLY upon basic values concerned with
+input/output; we therefore proceed to describe the ML input/output system.
+ 
+Input/Output in ML uses the concept of a {\sl stream}. A stream is a finite or
+infinite sequence of characters; if finite, it may or may not be terminated.
+(It may be convenient to think of a special end-of-stream character
+signifying termination, provided one realises that this ``character'' is
+never treated as data).
+Input streams -- or {\sl instreams} --
+are of type ~\INSTREAM~ and will be denoted by ~$is$~;
+output streams -- or {\sl outstreams} -- are of type ~\OUTSTREAM~ and will
+be denoted by ~$os$~. Both these types of stream are {\sl abstract}, in the
+sense that streams may only be manipulated by the functions provided in
+BasVal.
+
+Associated with an instream is a {\sl producer}, normally an I/O device or
+file; similarly an outstream is associated with a {\sl consumer}.  After this
+association has been established -- either initially or by the ~{\tt open\_in}~
+or ~{\tt open\_out}~ function -- the stream acts as a vehicle for character
+transmission from producer to program, or from program to consumer.
+The association can be broken by the ~{\tt close\_in}~ or ~{\tt close\_out}~
+function.\index{79.1}
+A closed stream permits no further character transmission; a closed
+instream is equivalent to one which is empty and terminated.
+
+There\index{79.1.1} are two streams in BasVal:
+\begin{itemize}
+\item  {\tt std\_in}: an instream whose producer is the terminal.
+\item  {\tt std\_out}: an outstream whose consumer is the terminal.
+\end{itemize}
+The other basic values concerned with Input/Output are all functional, and
+the effect of APPLY upon each of them given below. We take the
+liberty of abbreviating ``APPLY({\tt open\_in}, $s$)'' to 
+``{\tt open\_in}($s$)''
+etc., and
+we shall use ~$s$~ and ~$n$~ to range over strings and integers
+respectively.
+\begin{itemize}
+\item  {\tt open\_in}($s$)~ returns a new instream ~$is$~, whose producer is
+       the external file named ~$s$~. It returns exception packet
+       \begin{quote}
+       [$(${\tt Io},\verb+"Cannot open +$s$\verb+"+$)$]
+       \end{quote}
+       if file ~$s$~ does not exist or does not provide read access.
+\item  {\tt open\_out}($s$)~ returns a new outstream ~$os$~, whose consumer is
+       the
+       external file named ~$s$~. If file $s$ is non-existent, it is taken to
+       be initially empty.
+\item  {\tt input}($is,n$)~ returns a string ~$s$~ containing the first $n$
+       characters of ~$is$~, also removing them from ~$is$~.  If only $k<n$
+       characters are available on ~$is$~, then
+       \begin{itemize}
+       \item If ~$is$~ is terminated after these $k$ characters, the
+             returned string
+            ~$s$~ contains them alone, and they are removed from ~$is$~.
+       \item Otherwise no result is returned until the producer of ~$is$~
+             either supplies $n$ characters or terminates the stream.
+       \end{itemize}
+\item  {\tt lookahead}($is$)~ returns a single-character string ~$s$~ containing
+       the next character of ~$is$~, without removing it. If no character is
+       available on ~$is$~ then
+       \begin{itemize}
+       \item If ~$is$~ is closed, the empty string is returned.
+       \item Otherwise no result is returned until the producer of ~$is$~
+             either supplies a character or closes the stream.
+       \end{itemize}
+\item  {\tt close\_in}($is$)~ empties and terminates the instream ~$is$~ .
+\item  {\tt end\_of\_stream}($is$)~ returns {\TRUE} if 
+       ~{\tt lookahead}($is$)~ returns the empty string, {\FALSE} otherwise; 
+        it detects the end of the instream ~$is$~.
+\item {\tt output}($os,s$)~ writes the characters of ~$s$~  to the outstream
+       ~$os$~, unless ~$os$~ is closed, in which case it returns the exception
+       packet
+       \begin{quote}
+       [$(${\tt Io},\verb+"Output stream is closed"+$)$]
+       \end{quote}
+\item  {\tt close\_out}($os$)~ terminates the outstream ~$os$~.\index{79.2}
+\end{itemize}
+%\end{document}
+
+%              Constructors
+%\newcommand{\FALSE}{\mbox{\tt false}}
+%\newcommand{\TRUE}{\mbox{\tt true}}
+%\newcommand{\NIL}{\mbox{\tt nil}}
+%\newcommand{\REF}{\mbox{\tt ref}}
+%\newcommand{\UNIT}{\mbox{\tt unit}}
+
+%              Basic Values BasVal
+%\newcommand{\STDIN}{\mbox{\tt std\_in}}
+%\newcommand{\STDOUT}{\mbox{\tt std\_out}}

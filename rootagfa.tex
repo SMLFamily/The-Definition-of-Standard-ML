@@ -1,0 +1,114 @@
+% this is file `root', the root of the whole semantics
+\documentstyle[a4,12pt,twoside]{article}
+\title{The Definition of Standard ML\\ Version 3}
+\author{Robert Harper \and Robin Milner \and Mads Tofte \\
+Laboratory for Foundations of Computer Science\\
+Department of Computer Science\\
+University of Edinburgh\\
+Edinburgh EH9 3JZ, Scotland}
+\date{1 May 1989}
+\include{mac} % macros
+\makeindex
+%
+%\includeonly{syncor}
+\voffset -12mm
+\begin{document}
+\pagestyle{empty}
+\maketitle
+\cleardoublepage
+\pagestyle{plain}
+\setcounter{page}{3}
+\renewcommand{\thepage}{\roman{page}}
+\include{preface3}
+\include{preface2}
+\include{preface1}
+\tableofcontents
+\cleardoublepage
+\pagestyle{headings}
+\setcounter{page}{1}
+\renewcommand{\thepage}{\arabic{page}}
+\include{intro}
+\include{syncor}
+\include{synmod}
+\include{statcor}
+\include{statmod}
+\include{dyncor}
+\include{dynmod}
+\include{prog}
+\appendix
+\include{app1}
+\include{app2}
+\include{app3}
+\include{app4}
+\include{app5}
+\include{index}
+\end{document}
+
+ HOW TO REVISE THE INDEX 
+
+The index is made using partly LaTex and partly an ML progam;
+the latter is found on the file ``index.ml''. 
+
+When LaTex is run on input ``root.tex'' it produces a file ``root.idx''.
+Each line in this file is of the form
+
+               \indexentry{idxkey}{pageref}
+
+where idxkey is a key inserted precisely one place in the document 
+(in the form of a LaTex command \index{idxkey})
+and pageref is the page number of the page LaTex was printing
+by the time it encountered the \index{idxkey} command.
+
+A typical idxkey is 45.1 , which will occur in the TeX file 
+somewhere near what produces page 45 in the final document. 
+In fact, when the keys were first inserted in the TeX file, 
+45.1 would be the first key on page 45, but as the document changes, 
+one cannot get the pageref from the idxkey simple by taking the 
+prefix of the idxkey up to the full stop.
+
+There are many entries in the index that refer to the same
+idxkey. Thus the number of idxkeys has been kept relatively
+small, typically 2 or 3 pr page. The basic idea, then, is that
+there is an ML program (on file ``index.ml'') which
+associates entries in the final index with idxkeys by 
+a sequence of expressions
+
+              .......
+              item ``handle'' [p``45.4'',``57.3''to``59.1'',p``78.2''];
+              item ``{\\it happiness}'' [p''38.1''];
+              ......
+ 
+The program will first build a conversion table from idxkeys
+(such as ``45.4'') to page references by reading thrugh
+``root.idx''. Then it will evaluate all the item and subitem
+expressions. The item function produces a line in the
+latex file (``index.tex'') using the conversion table.
+Thus the above lines may produce
+
+               ...........
+               \item ``handle'' 46, 57--58, 78
+               \item {\it happiness} 38
+               ...........
+
+If insertion of more text in the source files result in 
+new page splits, then one should manually check that
+the item expressions in ``index.ml'' refer to the
+right idxkeys. It may be necessary to change some of the
+lists in the item expressions and it may be desirable to
+insert new \index commands in the source text. However,
+if we for simplicity assume that we simply insert new
+material corresponding to a new chapter (not affecting
+the page splits in other chapters) then one would proceed
+as follows:
+First add new item expressions in the index.ml file corre-
+sponding to new entries in the index (one will have new
+\index commands in the new input, of course). Then one
+runs latex on ``root.tex'' to produce the ``root.idx'' file. 
+Then one runs index.ml (enter ML and type use ``index.ml'').
+Then one runs latex on root again, this time giving the 
+correct index.
+
+
+
+
+
