@@ -6,7 +6,7 @@ Standard ML. To build a PDF, perform the following steps in a terminal window:
 ```
 pdflatex root
 bibtex root
-peflatex root
+pdflatex root
 pdflatex root
 ```
 
